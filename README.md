@@ -1,66 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Employee Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Welcome to the **Employee Management System**! This Laravel application is designed to manage employees, departments, and tasks within an organization.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **User Authentication**
+  - Secure login using email or phone with a predefined complex password.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Employee Management**
+  - Add, edit, search, and delete employee records.
+  - Manage employee details including first name, last name, salary, image, and manager.
+  - Full name is dynamically derived from first and last names.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Department Management**
+  - Add, edit, search, and delete departments.
+  - View the count of employees and total salary within each department.
+  - Prevent deletion of departments with assigned employees.
 
-## Learning Laravel
+- **Task Management**
+  - Managers can create and assign tasks to their direct reports.
+  - Employees can view and update their own tasks and change their status.
+  - Track tasks with statuses including pending, in progress, and completed.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Technologies Used
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Laravel:** PHP framework for backend development.
+- **Blade Components:** For creating dynamic and reusable views.
+- **MySQL:** Database management system.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Database Design
 
-## Laravel Sponsors
+### Users Table
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Stores information about employees and managers.
 
-### Premium Partners
+- **id (PK):** Unique identifier for each user.
+- **email:** User's email address.
+- **phone:** User's phone number.
+- **password:** User's hashed password.
+- **first_name:** User's first name.
+- **last_name:** User's last name.
+- **salary:** User's salary.
+- **image:** URL or path to the user's profile image.
+- **manager_id (FK):** References the `id` of the user's manager (self-referencing).
+- **department_id (FK):** References the `id` of the department to which the user belongs.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Departments Table
 
-## Contributing
+Stores information about departments within the organization.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **id (PK):** Unique identifier for each department.
+- **name:** Name of the department.
 
-## Code of Conduct
+### Tasks Table
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Stores information about tasks assigned to employees.
 
-## Security Vulnerabilities
+- **id (PK):** Unique identifier for each task.
+- **title:** Title of the task.
+- **description:** Detailed description of the task.
+- **status:** Current status of the task (e.g., pending, in progress, completed).
+- **user_id (FK):** References the `id` of the user (employee) the task is assigned to.
+- **created_at:** Timestamp when the task was created.
+- **updated_at:** Timestamp when the task was last updated.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### ER Diagram
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```plaintext
++----------------+       +-----------------+       +----------------+
+|    users       |       |   departments   |       |     tasks      |
++----------------+       +-----------------+       +----------------+
+| id (PK)        |<------| id (PK)         |       | id (PK)        |
+| email          |       | name            |       | title          |
+| phone          |       +-----------------+       | description    |
+| password       |                                  | status         |
+| first_name     |                                  | user_id (FK)   |
+| last_name      |                                  | created_at     |
+| salary         |                                  | updated_at     |
+| image          |                                  +----------------+
+| manager_id (FK)|
+| department_id (FK)|
++----------------+
