@@ -81,3 +81,54 @@ Stores information about tasks assigned to employees.
 | manager_id (FK)|
 | department_id (FK)|
 +----------------+
+```
+
+## Roles System
+
+The Employee Management system includes a roles-based access control (RBAC) system that ensures users have the appropriate permissions to access and manage various features within the application.
+
+### Available Roles
+
+The system currently supports the following roles:
+
+- **Admin**: 
+  - Full access to all features and functionalities.
+  - Can manage employees, departments, and tasks.
+  - Has access to all routes and can perform CRUD operations.
+
+- **Employee**: 
+  - Basic access to view tasks and manage their own profile.
+  - Can update the status of their assigned tasks.
+
+### Role Middleware
+
+The application uses Laravel's middleware to enforce role-based access. The `checkRole` middleware is applied to routes to ensure that only users with the appropriate role can access them.
+
+#### Example Usage
+
+```php
+
+Route::middleware(['auth', 'role:manager'])->group(function () {
+    Route::resource('employees', EmployeeController::class);
+    Route::resource('departments', DepartmentController::class);
+    Route::resource('tasks', TaskController::class)->except(['show', 'destroy']);
+});
+```
+### Gates
+
+In addition to middleware, the system uses Laravel Gates to further restrict actions within controllers. For example, the `edit-task` gate is used to determine whether a user can edit a specific task.
+
+#### Example Usage
+
+```php
+Gate::define('edit-task', function ($user, $task) {
+    return $user->id === $task->assigned_to || $user->hasRole('manager');
+});
+
+if (Gate::allows('edit-task', $task)) {
+    // The user can edit the task
+} else {
+    // The user is not authorized to edit the task
+}
+
+```
