@@ -91,7 +91,7 @@ The Employee Management system includes a roles-based access control (RBAC) syst
 
 The system currently supports the following roles:
 
-- **Admin**: 
+- **Manager**: 
   - Full access to all features and functionalities.
   - Can manage employees, departments, and tasks.
   - Has access to all routes and can perform CRUD operations.
