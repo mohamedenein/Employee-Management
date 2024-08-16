@@ -2,6 +2,36 @@
 
 Welcome to the **Employee Management System**! This Laravel application is designed to manage employees, departments, and tasks within an organization.
 
+## Getting Started
+
+Follow these steps to set up the project on your local machine.
+
+1 - composer install
+
+2 - npm install
+
+3 - Set Up the Env File and Configure the Database
+
+4 - php artisan migrate
+
+5 - php artisan db:seed
+
+## User Accounts
+
+Upon seeding the database, two user accounts are created with the following roles and credentials:
+
+### Manager Role
+
+- **Email:** `admin@test.com`
+- **Password:** `T7v$L@9e^rW!`
+
+### Employee Role
+
+- **Email:** `empolyee@test.com`
+- **Password:** `T7v$L@9e^rW!`
+
+You can use these credentials to log in and explore the different functionalities available for each role.
+
 ## Features
 
 - **User Authentication**
